@@ -64,7 +64,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
 
         {/* Content */}
-        <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 py-32 lg:py-40">
+        <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
