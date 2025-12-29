@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/config";
 import { Menu, X, Phone } from "lucide-react";
@@ -14,9 +15,16 @@ const navLinks = [
   { href: "/contatti", label: "Contatti" },
 ];
 
+// Pagine con sfondo chiaro che richiedono logo/testo scuro
+const lightBackgroundPages = ["/contatti", "/chi-siamo", "/servizi"];
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+
+  // Usa colori scuri se scrollato O se siamo su una pagina con sfondo chiaro
+  const useDarkColors = isScrolled || lightBackgroundPages.includes(pathname);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,7 +38,7 @@ export function Navbar() {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled
+        useDarkColors
           ? "bg-white/95 backdrop-blur-md shadow-sm border-b"
           : "bg-transparent"
       )}
@@ -40,7 +48,7 @@ export function Navbar() {
           {/* Logo - bianco quando non scrollato, nero quando scrollato */}
           <Link href="/" className="flex items-center">
             <Image
-              src={isScrolled ? "/images/Black@600x.png" : "/images/White@600x.png"}
+              src={useDarkColors ? "/images/Black@600x.png" : "/images/White@600x.png"}
               alt="Shine Multiservice"
               width={180}
               height={65}
@@ -57,7 +65,7 @@ export function Navbar() {
                 href={link.href}
                 className={cn(
                   "text-sm font-medium transition-colors",
-                  isScrolled
+                  useDarkColors
                     ? "text-gray-600 hover:text-gray-900"
                     : "text-white/90 hover:text-white"
                 )}
@@ -73,7 +81,7 @@ export function Navbar() {
               href={`tel:${siteConfig.phone}`}
               className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
-                isScrolled
+                useDarkColors
                   ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                   : "text-white/90 hover:text-white hover:bg-white/10"
               )}
@@ -85,7 +93,7 @@ export function Navbar() {
               href="/contatti"
               className={cn(
                 "px-6 py-2.5 rounded-lg text-sm font-semibold transition-all",
-                isScrolled
+                useDarkColors
                   ? "bg-shine-600 text-white hover:bg-shine-700"
                   : "bg-white text-shine-700 hover:bg-gray-100"
               )}
@@ -98,7 +106,7 @@ export function Navbar() {
           <button
             className={cn(
               "lg:hidden p-2 -mr-2",
-              isScrolled ? "text-gray-900" : "text-white"
+              useDarkColors ? "text-gray-900" : "text-white"
             )}
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
@@ -120,7 +128,7 @@ export function Navbar() {
         >
           <div className={cn(
             "flex flex-col gap-2 pt-4 border-t",
-            isScrolled ? "border-gray-200" : "border-white/20"
+            useDarkColors ? "border-gray-200" : "border-white/20"
           )}>
             {navLinks.map((link) => (
               <Link
@@ -129,7 +137,7 @@ export function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className={cn(
                   "py-2 px-3 text-base font-medium rounded-lg transition-colors",
-                  isScrolled
+                  useDarkColors
                     ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                     : "text-white/90 hover:text-white hover:bg-white/10"
                 )}
@@ -142,7 +150,7 @@ export function Navbar() {
                 href={`tel:${siteConfig.phone}`}
                 className={cn(
                   "flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-base font-medium border-2 transition-colors",
-                  isScrolled
+                  useDarkColors
                     ? "border-shine-600 text-shine-600 hover:bg-shine-600 hover:text-white"
                     : "border-white text-white hover:bg-white/10"
                 )}
@@ -155,7 +163,7 @@ export function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className={cn(
                   "flex items-center justify-center py-3 px-4 rounded-lg text-base font-semibold transition-colors",
-                  isScrolled
+                  useDarkColors
                     ? "bg-shine-600 text-white hover:bg-shine-700"
                     : "bg-white text-shine-700 hover:bg-gray-100"
                 )}
